@@ -3,8 +3,10 @@
 import {useState} from 'react'
 import Header from './components/Header'
 import Tasks from './components/Tasks'
+import AddTask from './components/AddTask'
 
 function App() {
+const[showAddTask, setShowAddTask]= useState(false)
 const [tasks, setTasks] = useState([
   {
     id:1,
@@ -16,23 +18,45 @@ const [tasks, setTasks] = useState([
     id:2,
     text:'Videoconferencia ITA',
     day: '3 de Septiembre 2021',
-    reminder: true
+    reminder: false
 },
 {
     id:3,
     text:'Entrega de Avance de Proyecto',
     day: '15 de Agosto 2021',
-    reminder: false
+    reminder: true
   }
 ])
 
-  const nombre = 'Betts'
+
+const deleteTask = (id) =>{
+//  console.log('delete', id);
+  setTasks(tasks.filter((task) => task.id !== id))
+}
+
+const toggleReminder = (id) =>{
+//  console.log('Reminder', id);
+  setTasks(tasks.map((task) => task.id === id ? {...task,reminder: !task.reminder} : task))
+}
+
+const addTask = (task) =>{
+//   console.log(task);
+const id = Math.floor(Math.random() * 10000) + 1
+const newTask = {id, ...task}
+setTasks([...tasks, newTask])
+}
+
+  const nombre = 'Nombre'
   const x = true
+  const y = false
 
   return (
       <div>
-      <Header title='Recordatorios'/>
-      <Tasks tasks={tasks} />
+      <Header title='Recordatorios' onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} />
+
+      {showAddTask && <AddTask onAdd={addTask} />}
+
+      <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />
 
     </div>
   );

@@ -10,8 +10,7 @@ return(
   <header className='header'>
   <h1> {props.title}</h1>
 
-  <Button onclick={onClick} text='Nuevo'/>
-
+<Button text={props.showAdd ? 'X' : '+'} onClick={props.onAdd}/>
   </header>
 )
 }
